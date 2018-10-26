@@ -16,7 +16,7 @@ abstract class DoctorData implements Built<DoctorData, DoctorDataBuilder> {
 
 abstract class Doctor implements Built<Doctor, DoctorBuilder> {
   
-  String get docID;
+  String get nationalId;
   String get surname;
   String get email;
 

@@ -62,7 +62,7 @@ class AfyaBoraAPI {
       'center': center,
       'symptoms': symptoms,
       'dosage': dosage,
-      'docID': '2'
+      'doctorNationalId': '8888888'
     }).then((dynamic res) {
       return null;
     });
