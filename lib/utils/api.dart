@@ -11,11 +11,11 @@ import 'package:afyabora/models/resources/resource.dart';
 
 class AfyaBoraAPI {
   NetworkUtil _netUtil = new NetworkUtil();
-  static final String baseUrl = 'https://afya-bora.herokuapp.com';
+  static final String baseUrl = 'https://afyabora.herokuapp.com';
   String userId;
 
   Future<UserData> signUp() async {
-    final String signUpUrl = '$baseUrl/user';
+    final String signUpUrl = '$baseUrl/auth/user';
 
     return _netUtil.post(signUpUrl, body: {}).then((dynamic res) {
       if(res == null) return null;
@@ -36,7 +36,7 @@ class AfyaBoraAPI {
 
   Future<List<Diagnosis>> getDiagnoses() async {
     getSharedPreferences();
-    final String diagnosesUrl = '$baseUrl/api/user/$userId/med-track';
+    final String diagnosesUrl = '$baseUrl/api/user/$userId/diagnosis';
     return _netUtil.get(diagnosesUrl).then((dynamic res) {
       print('Diagnoses');
       print(res);
@@ -54,7 +54,7 @@ class AfyaBoraAPI {
     String dosage
   ) async {
     getSharedPreferences();
-    final String addDiagnosisUrl = '$baseUrl/api/user/$userId/med-track';
+    final String addDiagnosisUrl = '$baseUrl/api/user/$userId/diagnosis';
 
     return _netUtil.post(addDiagnosisUrl, body: {
       'userID': userId,
