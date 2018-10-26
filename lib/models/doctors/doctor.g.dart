@@ -75,8 +75,8 @@ class _$DoctorSerializer implements StructuredSerializer<Doctor> {
   Iterable serialize(Serializers serializers, Doctor object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'docID',
-      serializers.serialize(object.docID,
+      'nationalId',
+      serializers.serialize(object.nationalId,
           specifiedType: const FullType(String)),
       'surname',
       serializers.serialize(object.surname,
@@ -100,8 +100,8 @@ class _$DoctorSerializer implements StructuredSerializer<Doctor> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'docID':
-          result.docID = serializers.deserialize(value,
+        case 'nationalId':
+          result.nationalId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'surname':
@@ -210,7 +210,7 @@ class DoctorDataBuilder implements Builder<DoctorData, DoctorDataBuilder> {
 
 class _$Doctor extends Doctor {
   @override
-  final String docID;
+  final String nationalId;
   @override
   final String surname;
   @override
@@ -219,9 +219,9 @@ class _$Doctor extends Doctor {
   factory _$Doctor([void updates(DoctorBuilder b)]) =>
       (new DoctorBuilder()..update(updates)).build();
 
-  _$Doctor._({this.docID, this.surname, this.email}) : super._() {
-    if (docID == null) {
-      throw new BuiltValueNullFieldError('Doctor', 'docID');
+  _$Doctor._({this.nationalId, this.surname, this.email}) : super._() {
+    if (nationalId == null) {
+      throw new BuiltValueNullFieldError('Doctor', 'nationalId');
     }
     if (surname == null) {
       throw new BuiltValueNullFieldError('Doctor', 'surname');
@@ -242,21 +242,21 @@ class _$Doctor extends Doctor {
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
     return other is Doctor &&
-        docID == other.docID &&
+        nationalId == other.nationalId &&
         surname == other.surname &&
         email == other.email;
   }
 
   @override
   int get hashCode {
-    return $jf(
-        $jc($jc($jc(0, docID.hashCode), surname.hashCode), email.hashCode));
+    return $jf($jc(
+        $jc($jc(0, nationalId.hashCode), surname.hashCode), email.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Doctor')
-          ..add('docID', docID)
+          ..add('nationalId', nationalId)
           ..add('surname', surname)
           ..add('email', email))
         .toString();
@@ -266,9 +266,9 @@ class _$Doctor extends Doctor {
 class DoctorBuilder implements Builder<Doctor, DoctorBuilder> {
   _$Doctor _$v;
 
-  String _docID;
-  String get docID => _$this._docID;
-  set docID(String docID) => _$this._docID = docID;
+  String _nationalId;
+  String get nationalId => _$this._nationalId;
+  set nationalId(String nationalId) => _$this._nationalId = nationalId;
 
   String _surname;
   String get surname => _$this._surname;
@@ -282,7 +282,7 @@ class DoctorBuilder implements Builder<Doctor, DoctorBuilder> {
 
   DoctorBuilder get _$this {
     if (_$v != null) {
-      _docID = _$v.docID;
+      _nationalId = _$v.nationalId;
       _surname = _$v.surname;
       _email = _$v.email;
       _$v = null;
@@ -305,8 +305,8 @@ class DoctorBuilder implements Builder<Doctor, DoctorBuilder> {
 
   @override
   _$Doctor build() {
-    final _$result =
-        _$v ?? new _$Doctor._(docID: docID, surname: surname, email: email);
+    final _$result = _$v ??
+        new _$Doctor._(nationalId: nationalId, surname: surname, email: email);
     replace(_$result);
     return _$result;
   }

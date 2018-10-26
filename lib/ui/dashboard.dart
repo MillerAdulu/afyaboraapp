@@ -19,7 +19,7 @@ class _DashboardState extends State<Dashboard> {
       child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         FadeInImage.memoryNetwork(
           placeholder: kTransparentImage,
-          image: 'https://picsum.photos/400',
+          image: 'https://picsum.photos/400?random',
         ),
         ListTile(
           leading: Icon(Icons.perm_identity),
