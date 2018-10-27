@@ -70,23 +70,23 @@ class _LoginFormState extends State<Login> {
                       style: TextStyle(color: Colors.white),
                     ),
                   )),
-              // Divider(),
-              // Container(
-              //     width: screenSize.width,
-              //     child: RaisedButton(
-              //       onPressed: this._signUp,
-              //       color: Colors.blue,
-              //       child: Text(
-              //         'Sign Up',
-              //         style: TextStyle(color: Colors.white),
-              //       ),
-              //     )),
+              Divider(),
+              Container(
+                  width: screenSize.width,
+                  child: RaisedButton(
+                    onPressed: this._signUp,
+                    color: Colors.blue,
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  )),
             ])));
   }
 
-  // void _signUp() {
-  //   Navigator.pushNamed(context, '/signup');
-  // }
+  void _signUp() {
+    Navigator.pushNamed(context, '/signup');
+  }
 
   void _login() {
 
