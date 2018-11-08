@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:afyabora/ui/dashboard.dart';
 import 'package:afyabora/ui/diagnoses.dart';
@@ -18,6 +19,7 @@ class Choice {
 }
 
 class _NavigationPage extends State<Navigation> {
+  SharedPreferences prefs;
   int _currentIndex = 0;
   final List<Widget> _children = [Dashboard(), Diagnoses(), Resources()];
 
@@ -70,12 +72,15 @@ class _NavigationPage extends State<Navigation> {
     switch (choice.value) {
       case 0:
         {
-          print('Logging out ...');
-          // Scaffold.of(context)
-          //     .showSnackBar(SnackBar(content: Text('You will be logged out!')));
-          // Navigator.popUntil(context, ModalRoute.withName('/login'));
+          clearData();
+          Navigator.of(context).pushReplacementNamed('/');
         }
         break;
     }
+  }
+
+  clearData() async {
+    prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 }
