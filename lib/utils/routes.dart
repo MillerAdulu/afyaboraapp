@@ -7,7 +7,7 @@ import 'package:afyabora/ui/auth/signup.dart';
 
 final routes = <String, WidgetBuilder> {
   '/login': (BuildContext context) => Login(),
-  '/dashboard': (BuildContext context) => Navigation(),
+  '/navigation': (BuildContext context) => Navigation(),
   '/adddiagnosis': (BuildContext context) => AddDiagnosis(),
-  '/signup': (BuildContext context) => SignUp(),
+  '/signup': (BuildContext context) => Register(),
 };

@@ -37,7 +37,7 @@ class _LoginFormState extends State<Login> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Form(
-      autovalidate: true,
+        autovalidate: true,
         key: _loginFormKey,
         child: Container(
             padding: EdgeInsets.all(20.0),
@@ -89,7 +89,6 @@ class _LoginFormState extends State<Login> {
   }
 
   void _login() {
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -102,7 +101,7 @@ class _LoginFormState extends State<Login> {
       api.login(_credentials.email, _credentials.password).then((loggedInUser) {
         if (loggedInUser is UserData) {
           saveUserData(loggedInUser.user);
-          Navigator.pushReplacementNamed(context, '/dashboard');
+          Navigator.pushReplacementNamed(context, '/navigation');
         } else {
           Navigator.of(context).pop();
           Scaffold.of(context).showSnackBar(SnackBar(
@@ -118,7 +117,7 @@ class _LoginFormState extends State<Login> {
   checkSharedPreferences() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getString('userId') != null) {
-      Navigator.pushNamed(context, '/dashboard');
+      Navigator.pushNamed(context, '/navigation');
     }
   }
 
