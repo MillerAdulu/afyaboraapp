@@ -14,10 +14,28 @@ class AfyaBoraAPI {
   static final String baseUrl = 'https://afyabora.herokuapp.com';
   String userId;
 
-  Future<UserData> signUp() async {
+  Future<UserData> signUp(
+    String email,
+    String password,
+    String firstName,
+    String lastName,
+    String weight,
+    String height,
+    String bloodGroup,
+    String gender
+  ) async {
     final String signUpUrl = '$baseUrl/auth/user';
 
-    return _netUtil.post(signUpUrl, body: {}).then((dynamic res) {
+    return _netUtil.post(signUpUrl, body: {
+      'email': email,
+      'password': password,
+      'firstName': firstName,
+      'lastName': lastName,
+      'weight': weight,
+      'height': height,
+      'bloodGroup': bloodGroup,
+      'gender': gender
+    }).then((dynamic res) {
       if(res == null) return null;
       return serializers.deserializeWith(UserData.serializer, res);
     });
@@ -28,7 +46,9 @@ class AfyaBoraAPI {
     final String loginUrl = '$baseUrl/auth/login';
     return _netUtil.post(loginUrl,
         body: {'email': email, 'password': password}).then((dynamic res) {
+      
       if (res == null) return null;
+      
       return serializers.deserializeWith(UserData.serializer, res);
     });
   }
@@ -38,8 +58,7 @@ class AfyaBoraAPI {
     getSharedPreferences();
     final String diagnosesUrl = '$baseUrl/api/user/$userId/diagnosis';
     return _netUtil.get(diagnosesUrl).then((dynamic res) {
-      print('Diagnoses');
-      print(res);
+      
       if (res == null) return null;
 
       DiagnosisData diagnosisData = serializers.deserializeWith(DiagnosisData.serializer, res);

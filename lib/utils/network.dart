@@ -43,7 +43,7 @@ class NetworkUtil {
       if (json.decode(res).isEmpty) return null;
 
       if (statusCode < 200 || statusCode > 400) {
-        throw new Exception('Error while fetching data');
+        return null;
       }
 
       return json.decode(res);

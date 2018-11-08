@@ -1,16 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:validate/validate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:progress_hud/progress_hud.dart';
 
 import 'package:afyabora/utils/api.dart';
 import 'package:afyabora/models/users/user.dart';
 
-class SignUp extends StatefulWidget {
+class Register extends StatelessWidget {
   @override
-  _SignUpFormState createState() => _SignUpFormState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Sign Up')),
+      body: Container(
+        padding: EdgeInsets.all(20.0),
+        child: RegisterForm(),
+      )
+    );
+  }
 }
 
-class _SignUpData {
+class RegisterForm extends StatefulWidget {
+  @override
+  RegisterFormState createState() => RegisterFormState();
+}
+
+class _RegisterData {
   String email = '';
   String password = '';
   String weight = '';
@@ -18,63 +32,39 @@ class _SignUpData {
   String bloodGroup = '';
   String firstName = '';
   String lastName = '';
+  String gender = '';
 }
 
-class _SignUpFormState extends State<SignUp> {
-  final _signUpFormKey = GlobalKey<FormState>();
+class RegisterFormState extends State<RegisterForm> {
+  final _signFormKey = GlobalKey<FormState>();
   SharedPreferences prefs;
 
-  _SignUpData _credentials = new _SignUpData();
+  _RegisterData _credentials = new _RegisterData();
 
-  @override
-  void initState() {
-    checkSharedPreferences();
-    super.initState();
-  }
+  ProgressHUD progressIndicator = ProgressHUD(
+    backgroundColor: Colors.black12,
+    color: Colors.white,
+    containerColor: Colors.blue,
+    borderRadius: 5.0,
+    text: 'Registering... ',
+  );
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    return
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Afya Bora',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Afya Bora')
-        ),
-        body: Center(
-          child: Form(
-        key: _signUpFormKey,
-        child: Container(
-            padding: EdgeInsets.all(20.0),
-            child: ListView(children: <Widget>[
-              // LinearProgressIndicator(value: null),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText: 'me@mail.com', labelText: 'E-mail Address'),
-                validator: this._validateEmail,
-                onSaved: (String email) {
-                  this._credentials.email = email;
-                },
-              ),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: 'Password', labelText: 'Password'),
-                validator: this._validatePassword,
-                onSaved: (String password) {
-                  this._credentials.password = password;
-                },
-              ),
+
+    return Form(
+        key: _signFormKey,
+        autovalidate: true,
+        child: SingleChildScrollView(            
+            child: Column(children: <Widget>[
               TextFormField(
                 keyboardType: TextInputType.text,
                 decoration:
                     InputDecoration(hintText: 'John', labelText: 'First Name'),
                 validator: this._validateName,
-                onSaved: (String firstName) {
-                  this._credentials.firstName = firstName;
+                onSaved: (String name) {
+                  this._credentials.firstName = name;
                 },
               ),
               TextFormField(
@@ -82,11 +72,52 @@ class _SignUpFormState extends State<SignUp> {
                 decoration:
                     InputDecoration(hintText: 'Doe', labelText: 'Last Name'),
                 validator: this._validateName,
-                onSaved: (String lastName) {
-                  this._credentials.lastName = lastName;
+                onSaved: (String name) {
+                  this._credentials.lastName = name;
                 },
               ),
-              // RadioListTile(title: Text('Gender'), groupValue: ,),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                    hintText: 'me@mail.com', labelText: 'E-mail Address'),
+                validator: _validateEmail,
+                onSaved: (email) => this._credentials.email = email
+              ),
+              TextFormField(
+                obscureText: true,
+                decoration: InputDecoration(
+                    hintText: 'password', labelText: 'Password'),
+                validator: this._validatePassword,
+                onSaved: (String password) {
+                    this._credentials.password = password;
+                },
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text('Gender'),
+                  RadioListTile<String>(
+                    title: const Text('Male'),
+                    value: 'Male',
+                    groupValue: this._credentials.gender,
+                    onChanged: (String value) {
+                      setState(() {
+                        this._credentials.gender = value;
+                      });
+                    },
+                  ),
+                  RadioListTile<String>(
+                    title: const Text('Female'),
+                    value: 'Female',
+                    groupValue: this._credentials.gender,
+                    onChanged: (String value) {
+                      setState(() {
+                        this._credentials.gender = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
               TextFormField(
                 keyboardType: TextInputType.numberWithOptions(),
                 decoration:
@@ -114,53 +145,55 @@ class _SignUpFormState extends State<SignUp> {
                   this._credentials.bloodGroup = bloodGroup;
                 },
               ),
-              // TextFormField(
-              //   keyboardType: TextInputType.numberWithOptions(),
-              //   decoration: InputDecoration(
-              //       hintText: 'John', labelText: 'Last Name'),
-              //   validator: this._validateName,
-              //   onSaved: (String lastName) {
-              //     this._credentials.lastName = lastName;
-              //   },
-              // ),
+
+              Divider(),
               Container(
                   width: screenSize.width,
                   child: RaisedButton(
-                    onPressed: this._signUp,
+                    onPressed: this._register,
                     color: Colors.blue,
                     child: Text(
-                      'SignUp',
+                      'Register',
                       style: TextStyle(color: Colors.white),
                     ),
                   )),
-            ]))),
-        )));
+            ])));
   }
 
-  void _signUp() {
-    if (_signUpFormKey.currentState.validate()) {
-      _signUpFormKey.currentState.save();
-      FocusScope.of(context).requestFocus(FocusNode());
+  void _register() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return progressIndicator;
+        });
 
-      api.signUp().then((loggedInUser) {
+    if (this._signFormKey.currentState.validate()) {
+      _signFormKey.currentState.save();
+
+      FocusScope.of(context).requestFocus(FocusNode());
+      
+      api
+          .signUp(
+              _credentials.email,
+              _credentials.password,
+              _credentials.firstName,
+              _credentials.lastName,
+              _credentials.weight,
+              _credentials.height,
+              _credentials.bloodGroup,
+              _credentials.gender)
+          .then((loggedInUser) {
         if (loggedInUser is UserData) {
           saveUserData(loggedInUser.user);
-          Navigator.pushNamed(context, '/dashboard');
+          Navigator.pushNamed(context, '/navigation');
         } else {
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: const Text(
-                'Unable to log you in. Please recheck your credentials.'),
+            content:
+                const Text('Unable to register you. Please try again later.'),
           ));
           return null;
         }
       });
-    }
-  }
-
-  checkSharedPreferences() async {
-    prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('userId') != null) {
-      Navigator.pushNamed(context, '/dashboard');
     }
   }
 
@@ -185,6 +218,15 @@ class _SignUpFormState extends State<SignUp> {
     return null;
   }
 
+  String _validateName(String value) {
+    try {
+      Validate.isAlphaNumeric(value);
+    } catch (e) {
+      return 'Please input a valid name';
+    }
+    return null;
+  }
+
   String _validatePassword(String value) {
     if (value.length < 4) {
       return 'The password must be at least 4 characters';
@@ -195,15 +237,6 @@ class _SignUpFormState extends State<SignUp> {
   String _validateValue(String value) {
     if (double.tryParse(value) == null) {
       return 'Please input a valid figure';
-    }
-    return null;
-  }
-
-  String _validateName(String value) {
-    try {
-      Validate.isAlphaNumeric(value);
-    } catch (e) {
-      return 'Please input a valid name';
     }
     return null;
   }
