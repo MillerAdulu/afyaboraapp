@@ -10,12 +10,11 @@ class Register extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
-      body: Container(
-        padding: EdgeInsets.all(20.0),
-        child: RegisterForm(),
-      )
-    );
+        appBar: AppBar(title: Text('Sign Up')),
+        body: Container(
+          padding: EdgeInsets.all(20.0),
+          child: RegisterForm(),
+        ));
   }
 }
 
@@ -56,108 +55,104 @@ class RegisterFormState extends State<RegisterForm> {
     return Form(
         key: _signFormKey,
         autovalidate: true,
-        child: SingleChildScrollView(            
+        child: SingleChildScrollView(
             child: Column(children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration:
-                    InputDecoration(hintText: 'John', labelText: 'First Name'),
-                validator: this._validateName,
-                onSaved: (String name) {
-                  this._credentials.firstName = name;
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration:
+                InputDecoration(hintText: 'John', labelText: 'First Name'),
+            validator: this._validateName,
+            onSaved: (String name) {
+              this._credentials.firstName = name;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration:
+                InputDecoration(hintText: 'Doe', labelText: 'Last Name'),
+            validator: this._validateName,
+            onSaved: (String name) {
+              this._credentials.lastName = name;
+            },
+          ),
+          TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              decoration: InputDecoration(
+                  hintText: 'me@mail.com', labelText: 'E-mail Address'),
+              validator: _validateEmail,
+              onSaved: (email) => this._credentials.email = email),
+          TextFormField(
+            obscureText: true,
+            decoration:
+                InputDecoration(hintText: 'password', labelText: 'Password'),
+            validator: this._validatePassword,
+            onSaved: (String password) {
+              this._credentials.password = password;
+            },
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Text('Gender'),
+              RadioListTile<String>(
+                title: const Text('Male'),
+                value: 'Male',
+                groupValue: this._credentials.gender,
+                onChanged: (String value) {
+                  setState(() {
+                    this._credentials.gender = value;
+                  });
                 },
               ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration:
-                    InputDecoration(hintText: 'Doe', labelText: 'Last Name'),
-                validator: this._validateName,
-                onSaved: (String name) {
-                  this._credentials.lastName = name;
+              RadioListTile<String>(
+                title: const Text('Female'),
+                value: 'Female',
+                groupValue: this._credentials.gender,
+                onChanged: (String value) {
+                  setState(() {
+                    this._credentials.gender = value;
+                  });
                 },
               ),
-              TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText: 'me@mail.com', labelText: 'E-mail Address'),
-                validator: _validateEmail,
-                onSaved: (email) => this._credentials.email = email
-              ),
-              TextFormField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    hintText: 'password', labelText: 'Password'),
-                validator: this._validatePassword,
-                onSaved: (String password) {
-                    this._credentials.password = password;
-                },
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Gender'),
-                  RadioListTile<String>(
-                    title: const Text('Male'),
-                    value: 'Male',
-                    groupValue: this._credentials.gender,
-                    onChanged: (String value) {
-                      setState(() {
-                        this._credentials.gender = value;
-                      });
-                    },
-                  ),
-                  RadioListTile<String>(
-                    title: const Text('Female'),
-                    value: 'Female',
-                    groupValue: this._credentials.gender,
-                    onChanged: (String value) {
-                      setState(() {
-                        this._credentials.gender = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-              TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                decoration:
-                    InputDecoration(hintText: '50.5', labelText: 'Weight'),
-                validator: this._validateValue,
-                onSaved: (String weight) {
-                  this._credentials.weight = weight;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                decoration:
-                    InputDecoration(hintText: '1.76', labelText: 'Height'),
-                validator: this._validateValue,
-                onSaved: (String height) {
-                  this._credentials.height = height;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration:
-                    InputDecoration(hintText: 'A', labelText: 'Blood Group'),
-                validator: this._validateName,
-                onSaved: (String bloodGroup) {
-                  this._credentials.bloodGroup = bloodGroup;
-                },
-              ),
-
-              Divider(),
-              Container(
-                  width: screenSize.width,
-                  child: RaisedButton(
-                    onPressed: this._register,
-                    color: Colors.blue,
-                    child: Text(
-                      'Register',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  )),
-            ])));
+            ],
+          ),
+          TextFormField(
+            keyboardType: TextInputType.numberWithOptions(),
+            decoration: InputDecoration(hintText: '50.5', labelText: 'Weight'),
+            validator: this._validateValue,
+            onSaved: (String weight) {
+              this._credentials.weight = weight;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.numberWithOptions(),
+            decoration: InputDecoration(hintText: '1.76', labelText: 'Height'),
+            validator: this._validateValue,
+            onSaved: (String height) {
+              this._credentials.height = height;
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            decoration:
+                InputDecoration(hintText: 'A', labelText: 'Blood Group'),
+            validator: this._validateName,
+            onSaved: (String bloodGroup) {
+              this._credentials.bloodGroup = bloodGroup;
+            },
+          ),
+          Divider(),
+          Container(
+              width: screenSize.width,
+              child: RaisedButton(
+                onPressed: this._register,
+                color: Colors.blue,
+                child: Text(
+                  'Register',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )),
+        ])));
   }
 
   void _register() {
@@ -171,7 +166,7 @@ class RegisterFormState extends State<RegisterForm> {
       _signFormKey.currentState.save();
 
       FocusScope.of(context).requestFocus(FocusNode());
-      
+
       api
           .signUp(
               _credentials.email,
