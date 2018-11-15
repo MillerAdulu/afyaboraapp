@@ -28,8 +28,8 @@ dependencies:
   progress_hud: ^1.1.0
 
 dev_dependencies:
-  # flutter_test:
-  #   sdk: flutter
+  flutter_test:
+    sdk: flutter
 
   build:
   build_runner:
